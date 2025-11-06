@@ -12,15 +12,6 @@ export function Header() {
               {/* Chalamada */}
             </h1>
           </div>
-          <div className="flex items-center gap-2">
-            <SignedOut>
-              <SignInButton>
-              <Button>
-                  Log in
-                </Button>
-              </SignInButton>
-            </SignedOut>
-          </div>
           <SignedIn>
             <UserButton />
           </SignedIn>

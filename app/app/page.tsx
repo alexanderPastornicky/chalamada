@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
+import prisma from "@/lib/prisma";
+import { Task } from "@/prisma/generated/prisma/client";
 
-export default function Page() {
+export default async function Page() {
     return (
         <div className="flex flex-col md:flex-row items-center justify-between gap-2">
             <div>
