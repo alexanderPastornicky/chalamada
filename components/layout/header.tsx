@@ -5,11 +5,11 @@ import { SignedOut } from "@clerk/nextjs";
 export function Header() {
   return (
     <header>
-      <div className="px-4">
+      <div className="px-4"> 
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <h1 className="text-xl font-semibold text-foreground tracking-tight">
-              Chalamada
+              {/* Chalamada */}
             </h1>
           </div>
           <div className="flex items-center gap-2">

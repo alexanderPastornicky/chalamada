@@ -9,7 +9,7 @@ export default function Page() {
                     Add tags to your tasks to organize them. Track your time and get things done.
                 </p>
             </div>
-            <div>
+            <div className="w-full md:w-auto">
                 <Button className="w-full md:w-auto">Create Task</Button>    
             </div>
         </div>
