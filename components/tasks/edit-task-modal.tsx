@@ -54,6 +54,7 @@ export function EditTaskModal({
                 className="w-full"
                 aria-invalid={!!state?.error}
                 aria-describedby={state?.error ? "task-error" : undefined}
+                autoComplete="off"
               />
             </div>
             <div>
@@ -64,6 +65,7 @@ export function EditTaskModal({
                 disabled={isPending}
                 className="w-full min-h-[100px]"
                 rows={4}
+                autoComplete="off"
               />
             </div>
             {state?.error && (

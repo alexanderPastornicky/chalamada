@@ -34,27 +34,29 @@ export function CreateTaskModal() {
       <DialogContent>
         <form action={formAction}>
           <DialogHeader>
-            <DialogTitle>Create New Task</DialogTitle>
+            <DialogTitle>New Task</DialogTitle>
           </DialogHeader>
           <div className="py-4 space-y-4">
             <div>
               <Input
                 name="name"
-                placeholder="Task name"
+                placeholder="Name"
                 required
                 disabled={isPending}
                 className="w-full"
                 aria-invalid={!!state?.error}
                 aria-describedby={state?.error ? "task-error" : undefined}
+                autoComplete="off"
               />
             </div>
             <div>
               <Textarea
                 name="description"
-                placeholder="Task description (optional)"
+                placeholder="Add description..."
                 disabled={isPending}
                 className="w-full min-h-[100px]"
                 rows={4}
+                autoComplete="off"
               />
             </div>
             {state?.error && (
