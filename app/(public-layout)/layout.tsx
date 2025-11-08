@@ -6,9 +6,11 @@ export default function Layout({
     children: React.ReactNode;
 }>) {
     return (
-        <div>
+        <div className="flex flex-col h-dvh">
             <PublicHeader />
-            {children}
+            <div className="flex-1 flex">
+                {children}
+            </div>
         </div>
     )
 }

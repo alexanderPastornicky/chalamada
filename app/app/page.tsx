@@ -1,4 +1,5 @@
-export default function Page() {
+
+export default async function Page() {
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row items-center justify-between gap-2">

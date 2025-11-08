@@ -15,6 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Spinner } from "@/components/ui/spinner";
 import { useActionState, useEffect } from "react";
 import { Task } from "@/prisma/generated/prisma/client";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface EditTaskModalProps {
   open: boolean;
@@ -29,6 +30,7 @@ export function EditTaskModal({
 }: EditTaskModalProps) {
   const updateTaskWithId = updateTask.bind(null, task.id);
   const [state, formAction, isPending] = useActionState(updateTaskWithId, null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (state?.success) {
@@ -38,7 +40,13 @@ export function EditTaskModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent
+        onOpenAutoFocus={(e) => {
+          if (isMobile) {
+            e.preventDefault();
+          }
+        }}
+      >
         <form action={formAction}>
           <DialogHeader>
             <DialogTitle>Edit Task</DialogTitle>

@@ -15,10 +15,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Spinner } from "@/components/ui/spinner";
 import { useActionState, useEffect, useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function CreateTaskModal() {
   const [open, setOpen] = useState(false);
   const [state, formAction, isPending] = useActionState(createTask, null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (state?.success) {
@@ -31,7 +33,13 @@ export function CreateTaskModal() {
       <DialogTrigger asChild>
         <Button className="w-full md:w-auto">Create Task</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent
+        onOpenAutoFocus={(e) => {
+          if (isMobile) {
+            e.preventDefault();
+          }
+        }}
+      >
         <form action={formAction}>
           <DialogHeader>
             <DialogTitle>New Task</DialogTitle>
