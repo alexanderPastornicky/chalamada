@@ -30,7 +30,7 @@ export function TaskItem({ task }: TaskItemProps) {
 
   return (
     <>
-      <Item variant="outline" className="bg-white">
+      <Item variant="outline" className="bg-card">
         <ItemContent>
           <ItemTitle>{task.name}</ItemTitle>
           {task.description && (
