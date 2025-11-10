@@ -14,13 +14,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Spinner } from "@/components/ui/spinner";
 import { useActionState, useEffect } from "react";
-import { Task } from "@/prisma/generated/prisma/client";
+import { TaskWithTimeEntries } from "@/lib/tasks/data-access";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface EditTaskModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  task: Task;
+  task: TaskWithTimeEntries;
 }
 
 export function EditTaskModal({

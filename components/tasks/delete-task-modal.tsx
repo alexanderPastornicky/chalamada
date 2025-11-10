@@ -12,12 +12,12 @@ import {
 } from "@/components/ui/dialog";
 import { Spinner } from "@/components/ui/spinner";
 import { useActionState, startTransition, useEffect } from "react";
-import { Task } from "@/prisma/generated/prisma/client";
+import { TaskWithTimeEntries } from "@/lib/tasks/data-access";
 
 interface DeleteTaskModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  task: Task;
+  task: TaskWithTimeEntries;
 }
 
 export function DeleteTaskModal({

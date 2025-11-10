@@ -16,7 +16,7 @@ export default function Page() {
         </div>
         <CreateTaskModal />
       </div>
-      <Suspense fallback={<div className="mt-8 text-center py-12">Loading tasks...</div>}>
+      <Suspense>
         <TaskList />
       </Suspense>
     </>

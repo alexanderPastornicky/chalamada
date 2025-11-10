@@ -25,7 +25,14 @@ export function PublicHeader() {
             </SignedOut>
           </div>
           <SignedIn>
+            <div className="flex gap-2">
+            <Link href="/app">
+              <Button>
+                Dashboard
+              </Button>
+            </Link>
             <UserButton />
+            </div>
           </SignedIn>
         </div>
       </div>

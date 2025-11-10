@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { refresh } from "next/cache";
 import { z } from "zod";
 import prisma from "@/lib/prisma";
 import { ActionState } from "@/lib/types/action-state";
@@ -32,7 +32,7 @@ export async function createTask(
         description: validatedFields.data.description || null,
       },
     });
-    revalidatePath("/app");
+    refresh();
     return { success: true };
   } catch (error) {
     console.error("Error creating task:", error);
@@ -69,7 +69,7 @@ export async function updateTask(
         description: validatedFields.data.description || null,
       },
     });
-    revalidatePath("/app");
+    refresh();
     return { success: true };
   } catch (error) {
     console.error("Error updating task:", error);
@@ -83,11 +83,73 @@ export async function deleteTask(
 ): Promise<ActionState> {
   try {
     await prisma.task.delete({ where: { id } });
-    revalidatePath("/app");
+    refresh();
     return { success: true };
   } catch (error) {
     console.error("Error deleting task:", error);
     return { error: "Failed to delete task" };
+  }
+}
+
+export async function startTimeEntry(
+  taskId: number,
+  prevState: ActionState | null
+): Promise<ActionState> {
+  try {
+    // Check if there's already an active time entry for this task
+    const activeEntry = await prisma.timeEntry.findFirst({
+      where: {
+        taskId,
+        endTime: null,
+      },
+    });
+
+    if (activeEntry) {
+      return { error: "There is already an active time entry for this task" };
+    }
+
+    await prisma.timeEntry.create({
+      data: {
+        taskId,
+        startTime: new Date(),
+        source: "TRACKER",
+      },
+    });
+    refresh(); 
+    return { success: true };
+  } catch (error) {
+    console.error("Error starting time entry:", error);
+    return { error: "Failed to start time entry" };
+  }
+}
+
+export async function pauseTimeEntry(
+  taskId: number,
+  prevState: ActionState | null
+): Promise<ActionState> {
+  try {
+    const activeTimeEntry = await prisma.timeEntry.findFirst({
+      where: {
+        taskId,
+        endTime: null,
+      },
+    });
+
+    if (!activeTimeEntry) {
+      return { error: "No active time entry found" };
+    }
+
+    await prisma.timeEntry.update({
+      where: { id: activeTimeEntry.id },
+      data: {
+        endTime: new Date(),
+      },
+    });
+    refresh();
+    return { success: true };
+  } catch (error) {
+    console.error("Error pausing time entry:", error);
+    return { error: "Failed to pause time entry" };
   }
 }
 

@@ -9,62 +9,70 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import {
-  Item,
-  ItemContent,
-  ItemTitle,
-  ItemDescription,
-  ItemActions,
-} from "@/components/ui/item";
+import { Badge } from "@/components/ui/badge";
 import { EditTaskModal } from "./edit-task-modal";
 import { DeleteTaskModal } from "./delete-task-modal";
-import { Task } from "@/prisma/generated/prisma/client";
+import { TimeTracking } from "./time-tracking";
+import { TaskWithTimeEntries } from "@/lib/tasks/data-access";
 
 interface TaskItemProps {
-  task: Task;
+  task: TaskWithTimeEntries;
 }
 
 export function TaskItem({ task }: TaskItemProps) {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
+  function getTaskStatus(task: TaskWithTimeEntries) {
+    if (task.timeEntries.length === 0) {
+      return "Todo";
+    } else {
+      return "In Progress";
+    }
+  }
+
   return (
     <>
-      <Item variant="outline" className="bg-card">
-        <ItemContent>
-          <ItemTitle>{task.name}</ItemTitle>
-          {task.description && (
-            <ItemDescription>{task.description}</ItemDescription>
-          )}
-        </ItemContent>
-        <ItemActions>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                aria-label={`More options for task: ${task.name}`}
-              >
-                <MoreVertical className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setIsEditOpen(true)}>
-                <Pencil className="h-4 w-4" />
-                <span>Edit</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                variant="destructive"
-                onClick={() => setIsDeleteOpen(true)}
-              >
-                <Trash2 className="h-4 w-4" />
-                <span>Delete</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </ItemActions>
-      </Item>
+      <div className="flex flex-col border rounded-sm p-2 bg-card h-26">
+        <div className="flex justify-between w-full">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium">{task.name}</span>
+            <Badge variant="secondary">
+              {getTaskStatus(task)}
+            </Badge>
+          </div>
+          <div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  aria-label={`More options for task: ${task.name}`}
+                >
+                  <MoreVertical className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setIsEditOpen(true)}>
+                  <Pencil className="h-4 w-4" />
+                  <span>Edit</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  variant="destructive"
+                  onClick={() => setIsDeleteOpen(true)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                  <span>Delete</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+        <TimeTracking task={task} />
+      </div>
+
+
 
       <EditTaskModal
         open={isEditOpen}
