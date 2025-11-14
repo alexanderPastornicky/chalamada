@@ -16,15 +16,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { Spinner } from "@/components/ui/spinner";
 import { useActionState, useEffect, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { LabelSelector } from "./label-selector";
 
 export function CreateTaskModal() {
   const [open, setOpen] = useState(false);
   const [state, formAction, isPending] = useActionState(createTask, null);
   const isMobile = useIsMobile();
+  const [selectedLabelIds, setSelectedLabelIds] = useState<number[]>([]);
 
   useEffect(() => {
     if (state?.success) {
       setOpen(false);
+      setSelectedLabelIds([]);
     }
   }, [state]);
   
@@ -65,6 +68,18 @@ export function CreateTaskModal() {
                 className="w-full min-h-[100px]"
                 rows={4}
                 autoComplete="off"
+              />
+            </div>
+            <div>
+              <LabelSelector
+                selectedLabelIds={selectedLabelIds}
+                onSelectionChange={setSelectedLabelIds}
+                disabled={isPending}
+              />
+              <input
+                type="hidden"
+                name="labelIds"
+                value={JSON.stringify(selectedLabelIds)}
               />
             </div>
             {state?.error && (

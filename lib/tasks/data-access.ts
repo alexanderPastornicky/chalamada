@@ -6,6 +6,7 @@ export async function getTasks() {
       timeEntries: {
         orderBy: { createdAt: "desc" },
       },
+      labels: true,
     },
     orderBy: { createdAt: "desc" },
   });

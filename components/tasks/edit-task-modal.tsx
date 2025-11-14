@@ -13,9 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Spinner } from "@/components/ui/spinner";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { TaskWithTimeEntries } from "@/lib/tasks/data-access";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { LabelSelector } from "./label-selector";
 
 interface EditTaskModalProps {
   open: boolean;
@@ -31,12 +32,13 @@ export function EditTaskModal({
   const updateTaskWithId = updateTask.bind(null, task.id);
   const [state, formAction, isPending] = useActionState(updateTaskWithId, null);
   const isMobile = useIsMobile();
+  const [selectedLabelIds, setSelectedLabelIds] = useState<number[]>(task.labels.map((label) => label.id));
 
   useEffect(() => {
     if (state?.success) {
       onOpenChange(false);
     }
-  }, [state, onOpenChange]);
+  }, [state]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -74,6 +76,18 @@ export function EditTaskModal({
                 className="w-full min-h-[100px]"
                 rows={4}
                 autoComplete="off"
+              />
+            </div>
+            <div>
+              <LabelSelector
+                selectedLabelIds={selectedLabelIds}
+                onSelectionChange={setSelectedLabelIds}
+                disabled={isPending}
+              />
+              <input
+                type="hidden"
+                name="labelIds"
+                value={JSON.stringify(selectedLabelIds)}
               />
             </div>
             {state?.error && (

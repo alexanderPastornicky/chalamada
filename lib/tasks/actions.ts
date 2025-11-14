@@ -8,15 +8,22 @@ import { ActionState } from "@/lib/types/action-state";
 const createTaskSchema = z.object({
   name: z.string().min(1, "Task name is required").trim(),
   description: z.string().trim().optional(),
+  labelIds: z.array(z.number()).optional(),
 });
 
 export async function createTask(
   prevState: ActionState | null,
   formData: FormData
 ): Promise<ActionState> {
+  const labelIdsStr = formData.get("labelIds");
+  const labelIds = labelIdsStr
+    ? JSON.parse(labelIdsStr as string).map((id: string) => parseInt(id, 10))
+    : [];
+
   const validatedFields = createTaskSchema.safeParse({
     name: formData.get("name"),
     description: formData.get("description"),
+    labelIds: labelIds.length > 0 ? labelIds : undefined,
   });
 
   if (!validatedFields.success) {
@@ -30,6 +37,13 @@ export async function createTask(
       data: {
         name: validatedFields.data.name,
         description: validatedFields.data.description || null,
+        labels: validatedFields.data.labelIds && validatedFields.data.labelIds.length > 0
+          ? {
+              connect: validatedFields.data.labelIds.map((labelId) => ({
+                id: labelId,
+              })),
+            }
+          : undefined,
       },
     });
     refresh();
@@ -43,6 +57,7 @@ export async function createTask(
 const updateTaskSchema = z.object({
   name: z.string().min(1, "Task name is required").trim(),
   description: z.string().trim().optional(),
+  labelIds: z.array(z.number()).optional(),
 });
 
 export async function updateTask(
@@ -50,9 +65,15 @@ export async function updateTask(
   prevState: ActionState | null,
   formData: FormData
 ): Promise<ActionState> {
+  const labelIdsStr = formData.get("labelIds");
+  const labelIds = labelIdsStr
+    ? JSON.parse(labelIdsStr as string).map((id: string) => parseInt(id, 10))
+    : [];
+
   const validatedFields = updateTaskSchema.safeParse({
     name: formData.get("name"),
     description: formData.get("description"),
+    labelIds: labelIds.length > 0 ? labelIds : undefined,
   });
 
   if (!validatedFields.success) {
@@ -67,6 +88,15 @@ export async function updateTask(
       data: {
         name: validatedFields.data.name,
         description: validatedFields.data.description || null,
+        labels: validatedFields.data.labelIds && validatedFields.data.labelIds.length > 0
+          ? {
+              set: validatedFields.data.labelIds.map((labelId) => ({
+                id: labelId,
+              })),
+            }
+          : {
+              set: [],
+            },
       },
     });
     refresh();

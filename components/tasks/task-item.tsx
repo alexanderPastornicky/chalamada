@@ -33,7 +33,7 @@ export function TaskItem({ task }: TaskItemProps) {
 
   return (
     <>
-      <div className="flex flex-col border rounded-sm p-2 bg-card h-26">
+      <div className="flex flex-col border rounded-sm p-2 py-1 bg-card h-26">
         <div className="flex justify-between w-full">
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium">{task.name}</span>
@@ -69,10 +69,25 @@ export function TaskItem({ task }: TaskItemProps) {
             </DropdownMenu>
           </div>
         </div>
-        <TimeTracking task={task} />
+        <div className="flex justify-between items-center mt-auto">
+          <div className="flex items-center gap-1 flex-wrap">
+            {task.labels.map((label) => (
+              <Badge
+                key={label.id}
+                variant="secondary"
+                className="flex items-center gap-1"
+              >
+                <span
+                  className="w-2 h-2 rounded-full"
+                  style={{ backgroundColor: label.color }}
+                />
+                {label.name}
+              </Badge>
+            ))}
+          </div>
+          <TimeTracking task={task} />
+        </div>
       </div>
-
-
 
       <EditTaskModal
         open={isEditOpen}

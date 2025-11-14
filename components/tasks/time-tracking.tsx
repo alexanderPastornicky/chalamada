@@ -62,7 +62,7 @@ export function TimeTracking({ task }: TimeTrackingProps) {
   };
 
   return (
-    <div className="flex items-center gap-1 w-fit self-end mt-auto">
+    <div className="flex items-center gap-1 w-fit">
       {task.timeEntries.length > 0 && (
       <span className="text-xs text-muted-foreground"> 
         {formatTime(accumulatedTime)}
