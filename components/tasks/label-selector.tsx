@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import useSWR, { mutate } from "swr";
+import { ChevronDown } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { createLabel } from "@/lib/labels/actions";
 import { fetcher } from "@/lib/utils";
@@ -97,8 +99,9 @@ export function LabelSelector({
   return (
     <DropdownMenu open={open} onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger asChild>
-        <Button type="button" variant="outline" size="sm" disabled={disabled}>
-          {selectedLabelIds.length > 0 ? `Labels (${selectedLabelIds.length})` : "Labels"}
+        <Button type="button" variant="outline" size="sm" disabled={disabled} className="gap-2">
+          Labels <Badge variant="secondary">{`${selectedLabelIds.length}/${labels.length}`}</Badge>
+          <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent

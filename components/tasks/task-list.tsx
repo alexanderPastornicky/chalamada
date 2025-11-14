@@ -8,14 +8,29 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { getTasks } from "@/lib/tasks/data-access";
+import { getLabels } from "@/lib/labels/data-access";
 import { TaskItem } from "./task-item";
+import { LabelFilter } from "./label-filter";
 
-export async function TaskList() {
-  const tasks = await getTasks();
+interface TaskListProps {
+  labelNames: string[];
+}
 
-  if (!tasks.length) {
-    return (
-      <Empty>
+export async function TaskList({ labelNames }: TaskListProps) {
+  const [tasks, labels] = await Promise.all([
+    getTasks(labelNames),
+    getLabels(),
+  ]);
+
+  return (
+    <>
+      {(labelNames.length > 0 || tasks.length > 0) && labels.length > 0 && (
+        <div className="mt-4 flex justify-end">
+          <LabelFilter labels={labels} selectedLabelNames={labelNames} />
+        </div>
+      )}
+      {!tasks.length ? (
+        <Empty>
           <EmptyHeader>
             <EmptyMedia variant="icon">
               <ListTodo />
@@ -25,14 +40,13 @@ export async function TaskList() {
           <EmptyContent>
           </EmptyContent>
         </Empty>
-    );
-  }
-
-  return (
-    <div className="mt-4 space-y-2">
-      {tasks.map((task) => (
-        <TaskItem key={task.id} task={task} />
-      ))}
-    </div>
+      ) : (
+        <div className="mt-4 space-y-2 max-w-2xl mx-auto w-full">
+          {tasks.map((task) => (
+            <TaskItem key={task.id} task={task} />
+          ))}
+        </div>
+      )}
+    </>
   );
 }

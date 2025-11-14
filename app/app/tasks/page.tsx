@@ -4,7 +4,14 @@ import { TaskList } from "@/components/tasks/task-list";
 
 export const dynamic = 'force-dynamic';
 
-export default function Page() {
+interface PageProps {
+  searchParams: Promise<{ labels?: string }>;
+}
+
+export default async function Page({ searchParams }: PageProps) {
+  const params = await searchParams;
+  const labelNames = params.labels?.split(',').filter(Boolean) || [];
+
   return (
     <>
       <div className="flex flex-col md:flex-row items-center justify-between gap-2">
@@ -17,7 +24,7 @@ export default function Page() {
         <CreateTaskModal />
       </div>
       <Suspense>
-        <TaskList />
+        <TaskList labelNames={labelNames} />
       </Suspense>
     </>
   );
