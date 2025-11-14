@@ -138,13 +138,22 @@ export async function startTimeEntry(
       return { error: "There is already an active time entry for this task" };
     }
 
-    await prisma.timeEntry.create({
-      data: {
-        taskId,
-        startTime: new Date(),
-        source: "TRACKER",
-      },
-    });
+    // Create new time entry and reset completedAt if task was done
+    await prisma.$transaction([
+      prisma.timeEntry.create({
+        data: {
+          taskId,
+          startTime: new Date(),
+          source: "TRACKER",
+        },
+      }),
+      prisma.task.update({
+        where: { id: taskId },
+        data: {
+          completedAt: null,
+        },
+      }),
+    ]);
     refresh(); 
     return { success: true };
   } catch (error) {
@@ -180,6 +189,37 @@ export async function pauseTimeEntry(
   } catch (error) {
     console.error("Error pausing time entry:", error);
     return { error: "Failed to pause time entry" };
+  }
+}
+
+export async function stopTask(
+  taskId: number,
+  prevState: ActionState | null
+): Promise<ActionState> {
+  try {
+    // Complete all active time entries and mark task as done in a transaction
+    await prisma.$transaction([
+      prisma.timeEntry.updateMany({
+        where: {
+          taskId,
+          endTime: null,
+        },
+        data: {
+          endTime: new Date(),
+        },
+      }),
+      prisma.task.update({
+        where: { id: taskId },
+        data: {
+          completedAt: new Date(),
+        },
+      }),
+    ]);
+    refresh();
+    return { success: true };
+  } catch (error) {
+    console.error("Error stopping task:", error);
+    return { error: "Failed to stop task" };
   }
 }
 

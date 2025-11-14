@@ -1,10 +1,10 @@
 "use client";
 
-import { Play, Pause } from "lucide-react";
+import { Play, Pause, Square } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { TaskWithTimeEntries } from "@/lib/tasks/data-access";
-import { startTimeEntry, pauseTimeEntry } from "@/lib/tasks/actions";
+import { startTimeEntry, pauseTimeEntry, stopTask } from "@/lib/tasks/actions";
 import { useTransition, useState, useEffect } from "react";
 
 interface TimeTrackingProps {
@@ -61,6 +61,12 @@ export function TimeTracking({ task }: TimeTrackingProps) {
     });
   };
 
+  const handleStop = () => {
+    startTransition(() => {
+      stopTask(task.id, null);
+    });
+  };
+
   return (
     <div className="flex items-center gap-1 w-fit">
       {task.timeEntries.length > 0 && (
@@ -101,6 +107,24 @@ export function TimeTracking({ task }: TimeTrackingProps) {
           </TooltipTrigger>
           <TooltipContent side="bottom">
             Pause tracking time
+          </TooltipContent>
+        </Tooltip>
+      )}
+      {task.timeEntries.length > 0 && !task.completedAt && (
+        <Tooltip delayDuration={700}>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleStop}
+              disabled={isPending}
+              aria-label={`Stop and complete task: ${task.name}`}
+            >
+              <Square />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="bottom">
+            Stop and complete task
           </TooltipContent>
         </Tooltip>
       )}

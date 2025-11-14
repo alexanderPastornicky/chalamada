@@ -10,6 +10,7 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { Label } from "@/prisma/generated/prisma/client";
 import { Badge } from "../ui/badge";
 
@@ -41,12 +42,19 @@ export function LabelFilter({ labels, selectedLabelNames }: LabelFilterProps) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button type="button" variant="outline" size="sm" className="gap-2">
-           Labels <Badge variant="secondary">{`${selectedLabelNames.length}/${labels.length}`}</Badge>
-           <ChevronDown className="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
+      <Tooltip delayDuration={700}>
+        <TooltipTrigger asChild>
+          <DropdownMenuTrigger asChild>
+            <Button type="button" variant="outline" size="sm" className="gap-2">
+               Labels <Badge variant="secondary">{`${selectedLabelNames.length}/${labels.length}`}</Badge>
+               <ChevronDown className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+        </TooltipTrigger>
+        <TooltipContent side="bottom">
+          Filter tasks by labels
+        </TooltipContent>
+      </Tooltip>
       <DropdownMenuContent align="start" className="w-56 max-h-[300px] overflow-y-auto">
         {labels.length === 0 ? (
           <div className="px-2 py-1.5 text-sm text-muted-foreground">
