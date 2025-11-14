@@ -47,7 +47,7 @@ export function AppSidebar() {
                   isActive={pathname === "/app/tasks"}
                 >
                   <Link 
-                    href={`/app/tasks?${new URLSearchParams({ status: "todo,in-progress" }).toString()}`}
+                    href="/app/tasks"
                     onClick={handleLinkClick}
                   >
                     <ListTodo />
