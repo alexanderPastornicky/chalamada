@@ -23,37 +23,12 @@ export function TaskItem({ task }: TaskItemProps) {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
-  function getTaskStatus(task: TaskWithTimeEntries) {
-    // If task is marked as done, it's Done
-    if (task.completedAt) {
-      return "Done";
-    }
-    
-    // If no time entries, it's Todo
-    if (task.timeEntries.length === 0) {
-      return "Todo";
-    }
-    
-    // Check if there's an active time entry (endTime === null)
-    const hasActiveTimeEntry = task.timeEntries.some(entry => entry.endTime === null);
-    
-    if (hasActiveTimeEntry) {
-      return "In Progress";
-    } else {
-      // Has time entries but all are paused - still In Progress (not Done)
-      return "In Progress";
-    }
-  }
-
   return (
     <>
       <div className="flex flex-col border rounded-sm p-2 py-1 bg-card h-26">
         <div className="flex justify-between w-full">
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium">{task.name}</span>
-            <Badge variant="secondary">
-              {getTaskStatus(task)}
-            </Badge>
           </div>
           <div>
             <DropdownMenu>

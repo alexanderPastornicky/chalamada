@@ -1,7 +1,8 @@
 "use client";
 
-import { Play, Pause, Square } from "lucide-react";
+import { Play, Pause, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { TaskWithTimeEntries } from "@/lib/tasks/data-access";
 import { startTimeEntry, pauseTimeEntry, stopTask } from "@/lib/tasks/actions";
@@ -21,6 +22,12 @@ function formatTime(milliseconds: number): string {
   if (hours > 0) return `${hours}h ${minutes % 60}m`;
   if (minutes > 0) return `${minutes}m ${seconds % 60}s`;
   return `0m ${seconds}s`;
+}
+
+function getTaskStatus(task: TaskWithTimeEntries) {
+  if (task.completedAt) return "Done";
+  if (task.timeEntries.length === 0) return "Todo";
+  return "In Progress";
 }
 
 export function TimeTracking({ task }: TimeTrackingProps) {
@@ -69,13 +76,16 @@ export function TimeTracking({ task }: TimeTrackingProps) {
 
   return (
     <div className="flex items-center gap-1 w-fit">
+      <Badge variant="secondary">
+        {getTaskStatus(task)}
+      </Badge>
       {task.timeEntries.length > 0 && (
       <span className="text-xs text-muted-foreground"> 
         {formatTime(accumulatedTime)}
       </span>
       )}
       {!activeTimeEntry && (
-        <Tooltip delayDuration={700}>
+        <Tooltip delayDuration={500}>
           <TooltipTrigger asChild >
             <Button
               variant="ghost"
@@ -93,7 +103,7 @@ export function TimeTracking({ task }: TimeTrackingProps) {
         </Tooltip>
       )}
       {activeTimeEntry && (
-        <Tooltip delayDuration={700}>
+        <Tooltip delayDuration={500}>
           <TooltipTrigger asChild>
             <Button
               variant="ghost"
@@ -111,20 +121,20 @@ export function TimeTracking({ task }: TimeTrackingProps) {
         </Tooltip>
       )}
       {task.timeEntries.length > 0 && !task.completedAt && (
-        <Tooltip delayDuration={700}>
+        <Tooltip delayDuration={500}>
           <TooltipTrigger asChild>
             <Button
               variant="ghost"
               size="icon"
               onClick={handleStop}
               disabled={isPending}
-              aria-label={`Stop and complete task: ${task.name}`}
+              aria-label={`Complete task: ${task.name}`}
             >
-              <Square />
+              <CheckCircle2 />
             </Button>
           </TooltipTrigger>
           <TooltipContent side="bottom">
-            Stop and complete task
+            Complete task
           </TooltipContent>
         </Tooltip>
       )}

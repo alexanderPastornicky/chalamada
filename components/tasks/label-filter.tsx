@@ -42,7 +42,7 @@ export function LabelFilter({ labels, selectedLabelNames }: LabelFilterProps) {
 
   return (
     <DropdownMenu>
-      <Tooltip delayDuration={700}>
+      <Tooltip delayDuration={500}>
         <TooltipTrigger asChild>
           <DropdownMenuTrigger asChild>
             <Button type="button" variant="outline" size="sm" className="gap-2">
