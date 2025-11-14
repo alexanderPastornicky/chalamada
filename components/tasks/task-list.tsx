@@ -11,22 +11,30 @@ import { getTasks } from "@/lib/tasks/data-access";
 import { getLabels } from "@/lib/labels/data-access";
 import { TaskItem } from "./task-item";
 import { LabelFilter } from "./label-filter";
+import { StatusFilter } from "./status-filter";
+import { TaskStatus } from "@/lib/tasks/types";
 
 interface TaskListProps {
   labelNames: string[];
+  statuses: TaskStatus[];
 }
 
-export async function TaskList({ labelNames }: TaskListProps) {
+export async function TaskList({ labelNames, statuses }: TaskListProps) {
   const [tasks, labels] = await Promise.all([
-    getTasks(labelNames),
+    getTasks(labelNames, statuses),
     getLabels(),
   ]);
 
+  const hasActiveFilters = labelNames.length > 0 || statuses.length > 0;
+
   return (
     <>
-      {(labelNames.length > 0 || tasks.length > 0) && labels.length > 0 && (
-        <div className="mt-4 flex justify-end">
-          <LabelFilter labels={labels} selectedLabelNames={labelNames} />
+      {(hasActiveFilters || tasks.length > 0) && (
+        <div className="mt-4 flex justify-end gap-2">
+          {labels.length > 0 && (
+            <LabelFilter labels={labels} selectedLabelNames={labelNames} />
+          )}
+          <StatusFilter selectedStatuses={statuses} />
         </div>
       )}
       {!tasks.length ? (
@@ -35,7 +43,7 @@ export async function TaskList({ labelNames }: TaskListProps) {
             <EmptyMedia variant="icon">
               <ListTodo />
             </EmptyMedia>
-            <EmptyTitle>No tasks yet</EmptyTitle>
+            <EmptyTitle>No tasks</EmptyTitle>
           </EmptyHeader>
           <EmptyContent>
           </EmptyContent>

@@ -1,16 +1,18 @@
 import { Suspense } from "react";
 import { CreateTaskModal } from "@/components/tasks/create-task-modal";
 import { TaskList } from "@/components/tasks/task-list";
+import { TaskStatus } from "@/lib/tasks/types";
 
 export const dynamic = 'force-dynamic';
 
 interface PageProps {
-  searchParams: Promise<{ labels?: string }>;
+  searchParams: Promise<{ labels?: string; status?: string }>;
 }
 
 export default async function Page({ searchParams }: PageProps) {
   const params = await searchParams;
   const labelNames = params.labels?.split(',').filter(Boolean) || [];
+  const statuses = (params.status?.split(',').filter(Boolean) || []) as TaskStatus[];
 
   return (
     <>
@@ -24,7 +26,7 @@ export default async function Page({ searchParams }: PageProps) {
         <CreateTaskModal />
       </div>
       <Suspense>
-        <TaskList labelNames={labelNames} />
+        <TaskList labelNames={labelNames} statuses={statuses} />
       </Suspense>
     </>
   );

@@ -99,7 +99,7 @@ export function LabelSelector({
   return (
     <DropdownMenu open={open} onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger asChild>
-        <Button type="button" variant="outline" size="sm" disabled={disabled} className="gap-2">
+        <Button type="button" variant="outline" size="sm" disabled={disabled} className="gap-1">
           Labels <Badge variant="secondary">{`${selectedLabelIds.length}/${labels.length}`}</Badge>
           <ChevronDown className="h-4 w-4" />
         </Button>
@@ -145,7 +145,6 @@ export function LabelSelector({
                 key={label.id}
                 checked={selectedLabelIds.includes(label.id)}
                 onCheckedChange={() => handleToggle(label.id)}
-                onSelect={(e) => e.preventDefault()}
                 className="flex items-center gap-2"
               >
                 <span
