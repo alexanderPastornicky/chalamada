@@ -46,7 +46,7 @@ export function StatusFilter({ selectedStatuses }: StatusFilterProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button type="button" variant="outline" size="sm" className="gap-1">
+        <Button type="button" variant="outline" size="sm" className="gap-1 bg-card">
           Status{" "}
           <Badge variant="secondary">
             {`${selectedStatuses.length}/${STATUS_OPTIONS.length}`}
