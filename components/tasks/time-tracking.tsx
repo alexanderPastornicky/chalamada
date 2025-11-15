@@ -120,7 +120,7 @@ export function TimeTracking({ task }: TimeTrackingProps) {
           </TooltipContent>
         </Tooltip>
       )}
-      {task.timeEntries.length > 0 && !task.completedAt && (
+      {(!activeTimeEntry && !task.completedAt && task.timeEntries.length > 0) && (
         <Tooltip delayDuration={500}>
           <TooltipTrigger asChild>
             <Button

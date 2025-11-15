@@ -1,5 +1,6 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { SignedIn, UserButton } from "@clerk/nextjs";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export function Header() {
   return (
@@ -12,9 +13,12 @@ export function Header() {
               {/* Chalamada */}
             </h1>
           </div>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
+          <div className="flex items-center gap-2">
+            <ModeToggle />
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </div>
         </div>
       </div>
     </header>

@@ -100,7 +100,7 @@ export function LabelSelector({
     <DropdownMenu open={open} onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger asChild>
         <Button type="button" variant="outline" size="sm" disabled={disabled} className="gap-1">
-          Labels <Badge variant="secondary">{`${selectedLabelIds.length}/${labels.length}`}</Badge>
+          Labels {labels.length > 0 && <Badge variant="secondary">{`${selectedLabelIds.length}/${labels.length}`}</Badge>}
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
@@ -169,7 +169,7 @@ export function LabelSelector({
 
             {(labels.length === 0 && filterLower === "") && (
               <div className="px-2 py-1.5 text-sm text-muted-foreground">
-                {labels.length === 0 ? "No labels available" : "No labels found"}
+                Create your first label
               </div>
             )}
           </>

@@ -20,7 +20,7 @@ export default async function Page({ searchParams }: PageProps) {
         <div className="w-full">
           <h1 className="text-2xl font-semibold tracking-tight">Tasks</h1>
           <p className="text-sm text-muted-foreground">
-            Manage your tasks. Create, view, and delete tasks as needed.
+          “You can't improve what you don't measure.”
           </p>
         </div>
         <CreateTaskModal />
