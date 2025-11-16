@@ -100,7 +100,7 @@ export function LabelSelector({
     <DropdownMenu open={open} onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger asChild>
         <Button type="button" variant="outline" size="sm" disabled={disabled} className="gap-1">
-          Labels {labels.length > 0 && <Badge variant="secondary">{`${selectedLabelIds.length}/${labels.length}`}</Badge>}
+          Labels {selectedLabelIds.length > 0 && (<Badge variant="secondary">{`${selectedLabelIds.length}/${labels.length}`}</Badge>) || null}
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>

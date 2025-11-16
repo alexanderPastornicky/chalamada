@@ -7,7 +7,7 @@ export default function Home() {
           <span className="font-light">task management</span>
         </p>
         <p className="text-xs text-muted-foreground md:text-sm">
-          Track your time, protect your focus.
+          With focus on time tracking
         </p>
       </div>
     </div>

@@ -42,7 +42,7 @@ export function LabelFilter({ labels, selectedLabelNames }: LabelFilterProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button type="button" variant="outline" size="sm" className="gap-1 bg-card">
-           Labels <Badge variant="secondary">{`${selectedLabelNames.length}/${labels.length}`}</Badge>
+           Labels {selectedLabelNames.length > 0 && (<Badge variant="secondary">{`${selectedLabelNames.length}/${labels.length}`}</Badge>)}
            <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
