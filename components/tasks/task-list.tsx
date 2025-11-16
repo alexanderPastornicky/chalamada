@@ -25,18 +25,14 @@ export async function TaskList({ labelNames, statuses }: TaskListProps) {
     getLabels(),
   ]);
 
-  const hasActiveFilters = labelNames.length > 0 || statuses.length > 0;
-
   return (
     <>
-      {(hasActiveFilters || tasks.length > 0) && (
-        <div className="mt-4 flex justify-end gap-2">
-          {labels.length > 0 && (
-            <LabelFilter labels={labels} selectedLabelNames={labelNames} />
-          )}
-          <StatusFilter selectedStatuses={statuses} />
-        </div>
-      )}
+      <div className="mt-4 flex justify-end gap-2">
+        {labels.length > 0 && (
+          <LabelFilter labels={labels} selectedLabelNames={labelNames} />
+        )}
+        <StatusFilter selectedStatuses={statuses} />
+      </div>
       {!tasks.length ? (
         <Empty>
           <EmptyHeader>

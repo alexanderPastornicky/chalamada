@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Label } from "@/prisma/generated/prisma/client";
 import { Badge } from "../ui/badge";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface LabelFilterProps {
   labels: Label[];
@@ -20,6 +21,7 @@ interface LabelFilterProps {
 export function LabelFilter({ labels, selectedLabelNames }: LabelFilterProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const isMobile = useIsMobile();
 
   const updateUrl = (newNames: string[]) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -42,8 +44,30 @@ export function LabelFilter({ labels, selectedLabelNames }: LabelFilterProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button type="button" variant="outline" size="sm" className="gap-1 bg-card">
-           Labels {selectedLabelNames.length > 0 && (<Badge variant="secondary">{`${selectedLabelNames.length}/${labels.length}`}</Badge>)}
-           <ChevronDown className="h-4 w-4" />
+          Labels{" "}
+          {selectedLabelNames.length > 0 && (
+            <>
+              {isMobile ? (
+                <Badge variant="secondary">
+                  {`${selectedLabelNames.length}/${labels.length}`}
+                </Badge>
+              ) : (
+                selectedLabelNames.map((labelName) => {
+                  const label = labels.find((l) => l.name === labelName);
+                  return label ? (
+                    <Badge key={label.id} variant="secondary" className="flex items-center gap-1">
+                      <span
+                        className="w-2 h-2 rounded-full"
+                        style={{ backgroundColor: label.color }}
+                      />
+                      {label.name}
+                    </Badge>
+                  ) : null;
+                })
+              )}
+            </>
+          )}
+          <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-56 max-h-[300px] overflow-y-auto">

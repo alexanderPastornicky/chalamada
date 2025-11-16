@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { createLabel } from "@/lib/labels/actions";
 import { fetcher } from "@/lib/utils";
 import { Label } from "@/prisma/generated/prisma/client";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface LabelSelectorProps {
   selectedLabelIds: number[];
@@ -44,6 +45,7 @@ export function LabelSelector({
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState("");
   const [isPending, startTransition] = useTransition();
+  const isMobile = useIsMobile();
 
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [pendingLabelName, setPendingLabelName] = useState("");
@@ -100,7 +102,29 @@ export function LabelSelector({
     <DropdownMenu open={open} onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger asChild>
         <Button type="button" variant="outline" size="sm" disabled={disabled} className="gap-1">
-          Labels {selectedLabelIds.length > 0 && (<Badge variant="secondary">{`${selectedLabelIds.length}/${labels.length}`}</Badge>) || null}
+          Labels{" "}
+          {selectedLabelIds.length > 0 && (
+            <>
+              {isMobile ? (
+                <Badge variant="secondary">
+                  {`${selectedLabelIds.length}/${labels.length}`}
+                </Badge>
+              ) : (
+                selectedLabelIds.map((labelId) => {
+                  const label = labels.find((l) => l.id === labelId);
+                  return label ? (
+                    <Badge key={label.id} variant="secondary" className="flex items-center gap-1">
+                      <span
+                        className="w-2 h-2 rounded-full"
+                        style={{ backgroundColor: label.color }}
+                      />
+                      {label.name}
+                    </Badge>
+                  ) : null;
+                })
+              )}
+            </>
+          )}
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>

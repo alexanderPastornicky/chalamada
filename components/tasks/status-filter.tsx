@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "../ui/badge";
 import { TaskStatus } from "@/lib/tasks/types";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const STATUS_OPTIONS: { value: TaskStatus; label: string }[] = [
   { value: "todo", label: "Todo" },
@@ -25,6 +26,7 @@ interface StatusFilterProps {
 export function StatusFilter({ selectedStatuses }: StatusFilterProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const isMobile = useIsMobile();
 
   const updateUrl = (newStatuses: TaskStatus[]) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -49,9 +51,22 @@ export function StatusFilter({ selectedStatuses }: StatusFilterProps) {
         <Button type="button" variant="outline" size="sm" className="gap-1 bg-card">
           Status{" "}
           {selectedStatuses.length > 0 && (
-            <Badge variant="secondary">
-              {`${selectedStatuses.length}/${STATUS_OPTIONS.length}`}
-            </Badge>
+            <>
+              {isMobile ? (
+                <Badge variant="secondary">
+                  {`${selectedStatuses.length}/${STATUS_OPTIONS.length}`}
+                </Badge>
+              ) : (
+                selectedStatuses.map((status) => {
+                  const option = STATUS_OPTIONS.find((opt) => opt.value === status);
+                  return option ? (
+                    <Badge key={status} variant="secondary">
+                      {option.label}
+                    </Badge>
+                  ) : null;
+                })
+              )}
+            </>
           )}
           <ChevronDown className="h-4 w-4" />
         </Button>

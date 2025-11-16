@@ -1,3 +1,7 @@
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { SignInButton } from "@clerk/nextjs";
+
 export default function Home() {
   return (
     <div className="flex-1 flex items-center justify-center px-4 py-12">
@@ -7,7 +11,7 @@ export default function Home() {
           <span className="font-light">task management</span>
         </p>
         <p className="text-xs text-muted-foreground md:text-sm">
-          With focus on time tracking
+          For individual use with focus on time
         </p>
       </div>
     </div>

@@ -24,6 +24,12 @@ export function AppSidebar() {
     }
   }
 
+  const tasksUrl = (() => {
+    const params = new URLSearchParams()
+    params.set("status", "todo,in-progress")
+    return `/app/tasks?${params.toString()}`
+  })()
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -44,10 +50,10 @@ export function AppSidebar() {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname === "/app/tasks"}
+                  isActive={pathname.startsWith("/app/tasks")}
                 >
                   <Link 
-                    href="/app/tasks"
+                    href={tasksUrl}
                     onClick={handleLinkClick}
                   >
                     <ListTodo />
