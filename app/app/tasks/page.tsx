@@ -19,9 +19,6 @@ export default async function Page({ searchParams }: PageProps) {
       <div className="flex flex-col md:flex-row items-center justify-between gap-2">
         <div className="w-full">
           <h1 className="text-2xl font-semibold tracking-tight">Tasks</h1>
-          <p className="text-sm text-muted-foreground">
-          “You can't improve what you don't measure.”
-          </p>
         </div>
         <CreateTaskModal />
       </div>
