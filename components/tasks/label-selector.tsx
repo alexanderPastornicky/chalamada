@@ -102,7 +102,7 @@ export function LabelSelector({
     <DropdownMenu open={open} onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger asChild>
         <Button type="button" variant="outline" size="sm" disabled={disabled} className="gap-1">
-          Labels{" "}
+          {(selectedLabelIds.length === 0 || isMobile) && "Labels "}
           {selectedLabelIds.length > 0 && (
             <>
               {isMobile ? (

@@ -44,7 +44,7 @@ export function LabelFilter({ labels, selectedLabelNames }: LabelFilterProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button type="button" variant="outline" size="sm" className="gap-1 bg-card">
-          Labels{" "}
+          {(selectedLabelNames.length === 0 || isMobile) && "Labels "}
           {selectedLabelNames.length > 0 && (
             <>
               {isMobile ? (

@@ -49,7 +49,7 @@ export function StatusFilter({ selectedStatuses }: StatusFilterProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button type="button" variant="outline" size="sm" className="gap-1 bg-card">
-          Status{" "}
+          {(selectedStatuses.length === 0 || isMobile) && "Status "}
           {selectedStatuses.length > 0 && (
             <>
               {isMobile ? (
